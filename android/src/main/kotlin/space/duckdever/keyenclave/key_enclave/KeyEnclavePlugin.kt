@@ -116,10 +116,9 @@ public class KeyEnclavePlugin: FlutterPlugin, MethodCallHandler {
     private fun generateKey(tag: String): String? {
         val keyPairGenerator: KeyPairGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, ANDROID_KEYSTORE)
         val parameterSpec: KeyGenParameterSpec =   KeyGenParameterSpec.Builder(tag,
-                KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY).
+                KeyProperties.PURPOSE_SIGN).
         setDigests(KeyProperties.DIGEST_SHA256).
         setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1")).
-        setUserAuthenticationRequired(true).
         build()
         keyPairGenerator.initialize(parameterSpec)
          return Base64.encodeToString(keyPairGenerator.genKeyPair().public.encoded,Base64.NO_WRAP).replace("\\+", "%2b")
