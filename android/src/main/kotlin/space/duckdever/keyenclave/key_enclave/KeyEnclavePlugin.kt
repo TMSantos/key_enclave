@@ -87,14 +87,14 @@ public class KeyEnclavePlugin: FlutterPlugin, MethodCallHandler {
 
             val privateKey: PrivateKey = keyStore.getKey(tag, null) as PrivateKey
 
-            val signature: ByteArray? = Signature.getInstance("SHA512withECDSA").run {
+            val signature: ByteArray? = Signature.getInstance("SHA256withECDSA").run {
                 initSign(privateKey)
                 update(message.toByteArray())
                 sign()
             }
 
             if (signature != null) {
-                 return Base64.encodeToString(signature, Base64.DEFAULT);
+                 return Base64.encodeToString(signature, Base64.NO_WRAP).replace("\\+", "%2b")
             } else {
                 throw Error("invalid signature")
             }
